@@ -2,6 +2,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Comprimir PDF</title>
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -10,19 +11,15 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
-    /* Global Styles - tema branco e rosa */
+    /* Fundo branco-rosa */
     body {
-      background: linear-gradient(135deg, #ffffff, #ff80ab);
-      font-family: 'Poppins', sans-serif;
-      color: #333;
-      min-height: 100vh;
-      margin: 0;
+      margin: 0; 
       padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ffffff, #ff80ab);
+      color: #333;
     }
-    .container {
-      margin-top: 50px;
-    }
-    /* Card Styles */
+    /* Card */
     .card {
       background: #fff;
       border: none;
@@ -30,6 +27,8 @@
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
       padding: 30px;
       transition: transform 0.3s ease;
+      max-width: 400px;
+      width: 100%;
     }
     .card:hover {
       transform: scale(1.02);
@@ -39,6 +38,7 @@
       font-weight: 600;
       margin-bottom: 20px;
       color: #ff4081;
+      text-align: center;
     }
     .form-label {
       font-weight: 500;
@@ -48,7 +48,7 @@
       border-radius: 10px;
       border: 2px solid #ddd;
     }
-    /* Custom Slider Styles (rosa) */
+    /* Slider Rosa */
     input[type=range] {
       -webkit-appearance: none;
       width: 100%;
@@ -89,7 +89,7 @@
       background: #ff80ab;
       transform: scale(1.1);
     }
-    /* Button Styles */
+    /* Botão */
     .btn-custom {
       background-color: #ff4081;
       color: #fff;
@@ -108,11 +108,12 @@
       font-weight: 600;
       margin-top: 15px;
     }
-    /* Preview Styles */
+    /* Preview */
     #previewContainer {
       position: relative;
       overflow: hidden;
       margin-top: 20px;
+      text-align: center;
     }
     #previewContainer img {
       border: 2px solid #ddd;
@@ -124,19 +125,16 @@
       display: block;
       margin: 0 auto;
     }
-    /* Pseudo-element para efeito shine com variáveis customizadas */
+    /* Shine Effect com animações aleatórias */
     #previewContainer::after {
       content: "";
       position: absolute;
-      /* As dimensões serão definidas via CSS vars */
       width: var(--shine-width, 50%);
       height: var(--shine-height, 100%);
       background: linear-gradient(120deg, transparent, var(--shine-color, rgba(255,64,129,0.5)), transparent);
       pointer-events: none;
-      /* A animação será definida via CSS var --shine-animation */
       animation: var(--shine-animation, shine-horz) var(--shine-duration, 0.7s) linear forwards;
     }
-    /* Keyframes para animações aleatórias */
     @keyframes shine-horz {
       0% { left: -var(--shine-width, 50%); opacity: 0; }
       50% { opacity: 1; }
@@ -167,43 +165,61 @@
       50% { opacity: 1; }
       100% { left: -var(--shine-width, 50%); top: -var(--shine-height, 50%); opacity: 0; }
     }
-    /* Estimation & Output */
+    /* Saída & Estimativa */
     #estimateDisplay {
       font-size: 1rem;
       color: #555;
       margin-top: 10px;
+      text-align: center;
     }
     #output p {
       font-size: 1.1rem;
       font-weight: 500;
+      text-align: center;
+    }
+    /* Centralização total (vertical e horizontal) */
+    .full-vh {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    /* Responsividade */
+    @media (max-width: 576px) {
+      .card {
+        padding: 20px;
+        max-width: 95%;
+      }
+      .card-title {
+        font-size: 1.5rem;
+      }
+      #estimateDisplay, #output p {
+        font-size: 0.9rem;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container py-5">
-    <div class="row justify-content-center">
-      <div class="col-md-7 col-lg-6">
-        <div class="card animate__animated animate__fadeInUp">
-          <h3 class="card-title text-center mb-4">Comprimir PDF</h3>
-          <div class="mb-3">
-            <label for="pdfInput" class="form-label">Selecione o PDF:</label>
-            <input type="file" class="form-control" id="pdfInput" accept="application/pdf">
-          </div>
-          <div class="mb-3">
-            <label for="quality" class="form-label">
-              Qualidade JPEG: <span id="qValue">100%</span>
-            </label>
-            <input type="range" class="form-range" id="quality" min="1" max="100" step="1" value="100">
-            <div id="estimateDisplay" class="text-center"></div>
-          </div>
-          <!-- Preview em tempo real da primeira página -->
-          <div id="previewContainer" class="text-center"></div>
-          <div class="d-grid gap-2 mt-4">
-            <button id="compressBtn" class="btn btn-custom btn-lg animate__animated animate__pulse">Comprimir PDF</button>
-          </div>
-          <div id="output" class="mt-4 text-center"></div>
-        </div>
+  <div class="container-fluid full-vh">
+    <div class="card animate__animated animate__fadeInUp">
+      <h3 class="card-title">Comprimir PDF</h3>
+      <div class="mb-3">
+        <label for="pdfInput" class="form-label">Selecione o PDF:</label>
+        <input type="file" class="form-control" id="pdfInput" accept="application/pdf">
       </div>
+      <div class="mb-3">
+        <label for="quality" class="form-label">
+          Qualidade JPEG: <span id="qValue">100%</span>
+        </label>
+        <input type="range" class="form-range" id="quality" min="1" max="100" step="1" value="100">
+        <div id="estimateDisplay"></div>
+      </div>
+      <!-- Preview em tempo real da primeira página -->
+      <div id="previewContainer"></div>
+      <div class="d-grid gap-2 mt-4">
+        <button id="compressBtn" class="btn btn-custom btn-lg animate__animated animate__pulse">Comprimir PDF</button>
+      </div>
+      <div id="output" class="mt-4"></div>
     </div>
   </div>
 
@@ -225,12 +241,12 @@
 
     let loadedPDF = null;
 
-    // Calcula a escala com base na qualidade (de 0.75 a 2.0)
+    // Calcula a escala com base na qualidade (varia de 0.75 a 2.0)
     function getScale() {
       return 0.75 + (qualitySlider.value / 100) * (2 - 0.75);
     }
 
-    // Atualiza a estimativa e o preview da primeira página (sempre centralizado)
+    // Atualiza a estimativa e o preview da primeira página
     async function updateEstimation() {
       qValue.textContent = qualitySlider.value + '%';
       if (!loadedPDF) return;
@@ -243,16 +259,17 @@
         canvas.height = viewport.height;
         await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
         const imgData = canvas.toDataURL('image/jpeg', qualitySlider.value / 100);
-        // Estima o tamanho multiplicando a primeira página pelo total
+
+        // Estima o tamanho multiplicando a primeira página pelo total de páginas
         const base64Str = imgData.split(',')[1];
         const sizePageBytes = Math.floor(base64Str.length * 3 / 4);
         const totalSizeBytes = sizePageBytes * loadedPDF.numPages;
         const totalSizeMB = (totalSizeBytes / (1024 * 1024)).toFixed(2);
         estimateDisplay.textContent = `Estimativa de tamanho: ${totalSizeMB} MB`;
-        // Atualiza o preview, garantindo centralização
+
+        // Atualiza o preview
         const imgPreview = new Image();
         imgPreview.src = imgData;
-        imgPreview.classList.add('mx-auto', 'd-block');
         previewContainer.innerHTML = "";
         previewContainer.appendChild(imgPreview);
       } catch (e) {
@@ -260,9 +277,23 @@
       }
     }
 
+    // Verifica se é PDF
+    function isPDF(file) {
+      return (
+        (file.type && file.type === "application/pdf") ||
+        (!file.type && file.name.toLowerCase().endsWith(".pdf"))
+      );
+    }
+
     pdfInput.addEventListener('change', async () => {
-      if (pdfInput.files[0]) {
-        const file = pdfInput.files[0];
+      const file = pdfInput.files[0];
+      if (file) {
+        // Verifica se é um arquivo PDF
+        if (!isPDF(file)) {
+          alert("Por favor, selecione um arquivo PDF válido.");
+          pdfInput.value = "";
+          return;
+        }
         const arrayBuffer = await file.arrayBuffer();
         loadedPDF = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
         updateEstimation();
@@ -271,7 +302,7 @@
 
     qualitySlider.addEventListener('input', updateEstimation);
 
-    // Animação shine com direção aleatória e parâmetros variados
+    // Animação shine com direção e parâmetros aleatórios
     previewContainer.addEventListener('mouseenter', () => {
       const animations = [
         "shine-horz",
@@ -282,8 +313,8 @@
         "shine-diag-rev"
       ];
       const randomAnim = animations[Math.floor(Math.random() * animations.length)];
-      const duration = (Math.random() * 1 + 0.5).toFixed(2) + "s"; // 0.5s a 1.5s
-
+      const duration = (Math.random() * 1 + 0.5).toFixed(2) + "s"; // 0.5s ~ 1.5s
+      // Dimensões do efeito
       if (randomAnim === "shine-horz" || randomAnim === "shine-horz-rev") {
         const width = (Math.random() * 30 + 40).toFixed(0) + "%";
         previewContainer.style.setProperty("--shine-width", width);
@@ -300,6 +331,8 @@
       }
       previewContainer.style.setProperty("--shine-duration", duration);
       previewContainer.style.setProperty("--shine-animation", randomAnim);
+      const alpha = (Math.random() * 0.4 + 0.3).toFixed(2);
+      previewContainer.style.setProperty("--shine-color", `rgba(255,64,129,${alpha})`);
     });
 
     compressBtn.onclick = async () => {
@@ -332,7 +365,7 @@
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
       link.download = "compressed.pdf";
-      link.className = "btn btn-custom";
+      link.className = "btn btn-success";
       link.textContent = "Baixar PDF";
       output.appendChild(link);
     };
