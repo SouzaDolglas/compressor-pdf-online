@@ -11,15 +11,26 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
-    /* Fundo branco-rosa */
-    body {
-      margin: 0; 
+    /* Remove scroll do body e faz ocupar a tela inteira */
+    html, body {
+      margin: 0;
       padding: 0;
+      height: 100%;
+      overflow: hidden; /* impede scroll externo */
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #ffffff, #ff80ab);
       color: #333;
     }
-    /* Card */
+
+    /* Container que ocupa a tela inteira e centraliza conteúdo */
+    .full-vh {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Card com limite de altura e scroll interno se precisar */
     .card {
       background: #fff;
       border: none;
@@ -29,6 +40,8 @@
       transition: transform 0.3s ease;
       max-width: 400px;
       width: 100%;
+      max-height: 90vh; /* limita altura para caber na tela */
+      overflow-y: auto; /* scroll interno, se necessário */
     }
     .card:hover {
       transform: scale(1.02);
@@ -43,7 +56,6 @@
     .form-label {
       font-weight: 500;
     }
-    /* Input & Range */
     .form-control {
       border-radius: 10px;
       border: 2px solid #ddd;
@@ -92,7 +104,7 @@
     /* Botão */
     .btn-custom {
       background-color: #ff4081;
-      color: #fff;
+      color: #fff !important; /* Mantém texto branco */
       font-weight: 600;
       border: none;
       border-radius: 30px;
@@ -102,6 +114,7 @@
     .btn-custom:hover {
       background-color: #e73370;
       transform: scale(1.05);
+      color: #fff !important; /* Garante branco no hover também */
     }
     a.btn-success {
       border-radius: 30px;
@@ -177,25 +190,9 @@
       font-weight: 500;
       text-align: center;
     }
-    /* Centralização total (vertical e horizontal) */
-    .full-vh {
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    /* Responsividade */
-    @media (max-width: 576px) {
-      .card {
-        padding: 20px;
-        max-width: 95%;
-      }
-      .card-title {
-        font-size: 1.5rem;
-      }
-      #estimateDisplay, #output p {
-        font-size: 0.9rem;
-      }
+    /* Spinner customizado em rosa */
+    .spinner-border.pink {
+      color: #ff4081 !important;
     }
   </style>
 </head>
@@ -217,7 +214,9 @@
       <!-- Preview em tempo real da primeira página -->
       <div id="previewContainer"></div>
       <div class="d-grid gap-2 mt-4">
-        <button id="compressBtn" class="btn btn-custom btn-lg animate__animated animate__pulse">Comprimir PDF</button>
+        <button id="compressBtn" class="btn btn-custom btn-lg animate__animated animate__pulse">
+          Comprimir PDF
+        </button>
       </div>
       <div id="output" class="mt-4"></div>
     </div>
@@ -241,7 +240,7 @@
 
     let loadedPDF = null;
 
-    // Calcula a escala com base na qualidade (varia de 0.75 a 2.0)
+    // Calcula a escala com base na qualidade (0.75 a 2.0)
     function getScale() {
       return 0.75 + (qualitySlider.value / 100) * (2 - 0.75);
     }
@@ -260,14 +259,14 @@
         await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
         const imgData = canvas.toDataURL('image/jpeg', qualitySlider.value / 100);
 
-        // Estima o tamanho multiplicando a primeira página pelo total de páginas
+        // Estimativa de tamanho
         const base64Str = imgData.split(',')[1];
         const sizePageBytes = Math.floor(base64Str.length * 3 / 4);
         const totalSizeBytes = sizePageBytes * loadedPDF.numPages;
         const totalSizeMB = (totalSizeBytes / (1024 * 1024)).toFixed(2);
         estimateDisplay.textContent = `Estimativa de tamanho: ${totalSizeMB} MB`;
 
-        // Atualiza o preview
+        // Preview
         const imgPreview = new Image();
         imgPreview.src = imgData;
         previewContainer.innerHTML = "";
@@ -277,7 +276,6 @@
       }
     }
 
-    // Verifica se é PDF
     function isPDF(file) {
       return (
         (file.type && file.type === "application/pdf") ||
@@ -288,7 +286,7 @@
     pdfInput.addEventListener('change', async () => {
       const file = pdfInput.files[0];
       if (file) {
-        // Verifica se é um arquivo PDF
+        // Verifica se é PDF
         if (!isPDF(file)) {
           alert("Por favor, selecione um arquivo PDF válido.");
           pdfInput.value = "";
@@ -314,7 +312,7 @@
       ];
       const randomAnim = animations[Math.floor(Math.random() * animations.length)];
       const duration = (Math.random() * 1 + 0.5).toFixed(2) + "s"; // 0.5s ~ 1.5s
-      // Dimensões do efeito
+
       if (randomAnim === "shine-horz" || randomAnim === "shine-horz-rev") {
         const width = (Math.random() * 30 + 40).toFixed(0) + "%";
         previewContainer.style.setProperty("--shine-width", width);
@@ -340,7 +338,15 @@
         alert('Selecione um PDF.');
         return;
       }
-      output.innerHTML = `<div class='spinner-border text-primary' role='status'><span class='visually-hidden'>Loading...</span></div> Processando...`;
+      // Spinner rosa centralizado
+      output.innerHTML = `
+        <div class="d-flex flex-column align-items-center">
+          <div class="spinner-border pink" role="status" style="margin-bottom:10px;">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p style="color:#ff4081;">Processando...</p>
+        </div>
+      `;
       const { jsPDF } = window.jspdf;
       let novoPDF = null;
       const scale = getScale();
@@ -361,13 +367,20 @@
       }
       const blob = novoPDF.output('blob');
       const tamanhoMB = (blob.size / (1024 * 1024)).toFixed(2);
-      output.innerHTML = `<p>Tamanho final estimado: ${tamanhoMB} MB</p>`;
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = "compressed.pdf";
-      link.className = "btn btn-success";
-      link.textContent = "Baixar PDF";
-      output.appendChild(link);
+
+      // Botão "Baixar PDF" centralizado, piscando
+      output.innerHTML = `
+        <p>Tamanho final estimado: ${tamanhoMB} MB</p>
+        <div class="text-center">
+          <a
+            href="${URL.createObjectURL(blob)}"
+            download="compressed.pdf"
+            class="btn btn-success animate__animated animate__pulse animate__infinite"
+          >
+            Baixar PDF
+          </a>
+        </div>
+      `;
     };
   </script>
 </body>
