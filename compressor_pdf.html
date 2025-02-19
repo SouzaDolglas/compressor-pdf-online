@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Comprimir PDF</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    /* Global Styles */
+    body {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      font-family: 'Poppins', sans-serif;
+      color: #333;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      margin-top: 50px;
+    }
+    /* Card Styles */
+    .card {
+      background: #fff;
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      padding: 30px;
+      transition: transform 0.3s ease;
+    }
+    .card:hover {
+      transform: scale(1.02);
+    }
+    .card-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #764ba2;
+    }
+    .form-label {
+      font-weight: 500;
+    }
+    /* Input & Range */
+    .form-control {
+      border-radius: 10px;
+      border: 2px solid #ddd;
+    }
+    /* Custom Slider Styles */
+    input[type=range] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 10px;
+      background: #e0e0e0;
+      border-radius: 5px;
+      outline: none;
+    }
+    input[type=range]:hover {
+      background: #d0d0d0;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 24px;
+      height: 24px;
+      background: #764ba2;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: transform 0.2s ease-in-out, background 0.2s ease-in-out;
+    }
+    input[type=range]::-webkit-slider-thumb:hover {
+      background: #667eea;
+      transform: scale(1.1);
+    }
+    input[type=range]::-moz-range-thumb {
+      width: 24px;
+      height: 24px;
+      background: #764ba2;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: transform 0.2s ease-in-out, background 0.2s ease-in-out;
+    }
+    input[type=range]::-moz-range-thumb:hover {
+      background: #667eea;
+      transform: scale(1.1);
+    }
+    /* Button Styles */
+    .btn-custom {
+      background-color: #764ba2;
+      color: #fff;
+      font-weight: 600;
+      border: none;
+      border-radius: 30px;
+      padding: 10px 20px;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    .btn-custom:hover {
+      background-color: #667eea;
+      transform: scale(1.05);
+    }
+    a.btn-success {
+      border-radius: 30px;
+      font-weight: 600;
+      margin-top: 15px;
+    }
+    /* Preview Styles */
+    #previewContainer {
+      position: relative;
+      overflow: hidden;
+      margin-top: 20px;
+    }
+    #previewContainer img {
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      max-width: 100%;
+      height: auto;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+      display: block;
+      margin: 0 auto;
+    }
+    /* Shine Effect: aparece somente em hover, sem pausa */
+    #previewContainer::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(118,75,162,0.5), transparent);
+      transform: skewX(-25deg);
+      opacity: 0;
+      pointer-events: none;
+    }
+    #previewContainer:hover::after {
+      animation: shine 0.7s linear forwards;
+    }
+    @keyframes shine {
+      0% { left: -100%; opacity: 0; }
+      10% { opacity: 1; }
+      90% { left: 100%; opacity: 1; }
+      100% { left: 100%; opacity: 0; }
+    }
+    /* Estimation & Output */
+    #estimateDisplay {
+      font-size: 1rem;
+      color: #555;
+      margin-top: 10px;
+    }
+    #output p {
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-7 col-lg-6">
+        <div class="card animate__animated animate__fadeInUp">
+          <h3 class="card-title text-center mb-4">Comprimir PDF</h3>
+          <div class="mb-3">
+            <label for="pdfInput" class="form-label">Selecione o PDF:</label>
+            <input type="file" class="form-control" id="pdfInput" accept="application/pdf">
+          </div>
+          <div class="mb-3">
+            <label for="quality" class="form-label">
+              Qualidade JPEG: <span id="qValue">100%</span>
+            </label>
+            <!-- Slider de 1 a 100 -->
+            <input type="range" class="form-range" id="quality" min="1" max="100" step="1" value="100">
+            <div id="estimateDisplay" class="text-center"></div>
+          </div>
+          <!-- Preview em tempo real da primeira página (sempre centralizado) -->
+          <div id="previewContainer" class="text-center"></div>
+          <div class="d-grid gap-2 mt-4">
+            <button id="compressBtn" class="btn btn-custom btn-lg animate__animated animate__pulse">Comprimir PDF</button>
+          </div>
+          <div id="output" class="mt-4 text-center"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PDF.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+  <!-- jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- Bootstrap Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    const pdfInput = document.getElementById('pdfInput');
+    const qualitySlider = document.getElementById('quality');
+    const qValue = document.getElementById('qValue');
+    const compressBtn = document.getElementById('compressBtn');
+    const output = document.getElementById('output');
+    const estimateDisplay = document.getElementById('estimateDisplay');
+    const previewContainer = document.getElementById('previewContainer');
+
+    let loadedPDF = null;
+
+    // Calcula a escala com base na qualidade (varia de 0.75 a 2.0)
+    function getScale() {
+      return 0.75 + (qualitySlider.value / 100) * (2 - 0.75);
+    }
+
+    // Atualiza a estimativa e o preview da primeira página, garantindo que o preview fique centralizado
+    async function updateEstimation() {
+      qValue.textContent = qualitySlider.value + '%';
+      if (!loadedPDF) return;
+      try {
+        const page = await loadedPDF.getPage(1);
+        const scale = getScale();
+        const viewport = page.getViewport({ scale });
+        const canvas = document.createElement('canvas');
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+        // Cria a imagem JPEG conforme a qualidade definida
+        const imgData = canvas.toDataURL('image/jpeg', qualitySlider.value / 100);
+        // Estimativa de tamanho: renderiza a primeira página e multiplica pelo número total de páginas
+        const base64Str = imgData.split(',')[1];
+        const sizePageBytes = Math.floor(base64Str.length * 3 / 4);
+        const totalSizeBytes = sizePageBytes * loadedPDF.numPages;
+        const totalSizeMB = (totalSizeBytes / (1024 * 1024)).toFixed(2);
+        estimateDisplay.textContent = `Estimativa de tamanho: ${totalSizeMB} MB`;
+        // Atualiza o preview com a imagem gerada, garantindo que ela seja centralizada
+        const imgPreview = new Image();
+        imgPreview.src = imgData;
+        imgPreview.classList.add('mx-auto', 'd-block');
+        previewContainer.innerHTML = "";
+        previewContainer.appendChild(imgPreview);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    pdfInput.addEventListener('change', async () => {
+      if (pdfInput.files[0]) {
+        const file = pdfInput.files[0];
+        const arrayBuffer = await file.arrayBuffer();
+        loadedPDF = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        updateEstimation();
+      }
+    });
+
+    qualitySlider.addEventListener('input', updateEstimation);
+
+    compressBtn.onclick = async () => {
+      if (!loadedPDF) { 
+        alert('Selecione um PDF.');
+        return;
+      }
+      output.innerHTML = `<div class='spinner-border text-primary' role='status'><span class='visually-hidden'>Loading...</span></div> Processando...`;
+      const { jsPDF } = window.jspdf;
+      let novoPDF = null;
+      const scale = getScale();
+      for (let i = 1; i <= loadedPDF.numPages; i++) {
+        const page = await loadedPDF.getPage(i);
+        const viewport = page.getViewport({ scale });
+        const canvas = document.createElement('canvas');
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+        const imgData = canvas.toDataURL('image/jpeg', qualitySlider.value / 100);
+        if (i === 1) {
+          novoPDF = new jsPDF({ unit: "px", format: [canvas.width, canvas.height] });
+        } else {
+          novoPDF.addPage([canvas.width, canvas.height], 'portrait');
+        }
+        novoPDF.addImage(imgData, 'JPEG', 0, 0, canvas.width, canvas.height);
+      }
+      const blob = novoPDF.output('blob');
+      const tamanhoMB = (blob.size / (1024 * 1024)).toFixed(2);
+      output.innerHTML = `<p>Tamanho final estimado: ${tamanhoMB} MB</p>`;
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = "compressed.pdf";
+      link.className = "btn btn-success";
+      link.textContent = "Baixar PDF";
+      output.appendChild(link);
+    };
+  </script>
+</body>
+</html>
