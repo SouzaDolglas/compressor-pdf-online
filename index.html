@@ -10,9 +10,9 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
-    /* Global Styles */
+    /* Global Styles - tema branco e rosa */
     body {
-      background: linear-gradient(135deg, #667eea, #764ba2);
+      background: linear-gradient(135deg, #ffffff, #ff80ab);
       font-family: 'Poppins', sans-serif;
       color: #333;
       min-height: 100vh;
@@ -27,7 +27,7 @@
       background: #fff;
       border: none;
       border-radius: 15px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
       padding: 30px;
       transition: transform 0.3s ease;
     }
@@ -38,7 +38,7 @@
       font-size: 1.8rem;
       font-weight: 600;
       margin-bottom: 20px;
-      color: #764ba2;
+      color: #ff4081;
     }
     .form-label {
       font-weight: 500;
@@ -48,23 +48,23 @@
       border-radius: 10px;
       border: 2px solid #ddd;
     }
-    /* Custom Slider Styles */
+    /* Custom Slider Styles (rosa) */
     input[type=range] {
       -webkit-appearance: none;
       width: 100%;
       height: 10px;
-      background: #e0e0e0;
+      background: #f0f0f0;
       border-radius: 5px;
       outline: none;
     }
     input[type=range]:hover {
-      background: #d0d0d0;
+      background: #e0e0e0;
     }
     input[type=range]::-webkit-slider-thumb {
       -webkit-appearance: none;
       width: 24px;
       height: 24px;
-      background: #764ba2;
+      background: #ff4081;
       border: 2px solid #fff;
       border-radius: 50%;
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
@@ -72,13 +72,13 @@
       transition: transform 0.2s ease-in-out, background 0.2s ease-in-out;
     }
     input[type=range]::-webkit-slider-thumb:hover {
-      background: #667eea;
+      background: #ff80ab;
       transform: scale(1.1);
     }
     input[type=range]::-moz-range-thumb {
       width: 24px;
       height: 24px;
-      background: #764ba2;
+      background: #ff4081;
       border: 2px solid #fff;
       border-radius: 50%;
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
@@ -86,12 +86,12 @@
       transition: transform 0.2s ease-in-out, background 0.2s ease-in-out;
     }
     input[type=range]::-moz-range-thumb:hover {
-      background: #667eea;
+      background: #ff80ab;
       transform: scale(1.1);
     }
     /* Button Styles */
     .btn-custom {
-      background-color: #764ba2;
+      background-color: #ff4081;
       color: #fff;
       font-weight: 600;
       border: none;
@@ -100,7 +100,7 @@
       transition: background-color 0.3s ease, transform 0.3s ease;
     }
     .btn-custom:hover {
-      background-color: #667eea;
+      background-color: #e73370;
       transform: scale(1.05);
     }
     a.btn-success {
@@ -124,27 +124,48 @@
       display: block;
       margin: 0 auto;
     }
-    /* Shine Effect: aparece somente em hover, sem pausa */
+    /* Pseudo-element para efeito shine com variáveis customizadas */
     #previewContainer::after {
       content: "";
       position: absolute;
-      top: 0;
-      left: -100%;
-      width: 50%;
-      height: 100%;
-      background: linear-gradient(120deg, transparent, rgba(118,75,162,0.5), transparent);
-      transform: skewX(-25deg);
-      opacity: 0;
+      /* As dimensões serão definidas via CSS vars */
+      width: var(--shine-width, 50%);
+      height: var(--shine-height, 100%);
+      background: linear-gradient(120deg, transparent, var(--shine-color, rgba(255,64,129,0.5)), transparent);
       pointer-events: none;
+      /* A animação será definida via CSS var --shine-animation */
+      animation: var(--shine-animation, shine-horz) var(--shine-duration, 0.7s) linear forwards;
     }
-    #previewContainer:hover::after {
-      animation: shine 0.7s linear forwards;
-    }
-    @keyframes shine {
-      0% { left: -100%; opacity: 0; }
-      10% { opacity: 1; }
-      90% { left: 100%; opacity: 1; }
+    /* Keyframes para animações aleatórias */
+    @keyframes shine-horz {
+      0% { left: -var(--shine-width, 50%); opacity: 0; }
+      50% { opacity: 1; }
       100% { left: 100%; opacity: 0; }
+    }
+    @keyframes shine-horz-rev {
+      0% { left: 100%; opacity: 0; }
+      50% { opacity: 1; }
+      100% { left: -var(--shine-width, 50%); opacity: 0; }
+    }
+    @keyframes shine-vert {
+      0% { top: -var(--shine-height, 50%); opacity: 0; }
+      50% { opacity: 1; }
+      100% { top: 100%; opacity: 0; }
+    }
+    @keyframes shine-vert-rev {
+      0% { top: 100%; opacity: 0; }
+      50% { opacity: 1; }
+      100% { top: -var(--shine-height, 50%); opacity: 0; }
+    }
+    @keyframes shine-diag {
+      0% { left: -var(--shine-width, 50%); top: -var(--shine-height, 50%); opacity: 0; }
+      50% { opacity: 1; }
+      100% { left: 100%; top: 100%; opacity: 0; }
+    }
+    @keyframes shine-diag-rev {
+      0% { left: 100%; top: 100%; opacity: 0; }
+      50% { opacity: 1; }
+      100% { left: -var(--shine-width, 50%); top: -var(--shine-height, 50%); opacity: 0; }
     }
     /* Estimation & Output */
     #estimateDisplay {
@@ -172,11 +193,10 @@
             <label for="quality" class="form-label">
               Qualidade JPEG: <span id="qValue">100%</span>
             </label>
-            <!-- Slider de 1 a 100 -->
             <input type="range" class="form-range" id="quality" min="1" max="100" step="1" value="100">
             <div id="estimateDisplay" class="text-center"></div>
           </div>
-          <!-- Preview em tempo real da primeira página (sempre centralizado) -->
+          <!-- Preview em tempo real da primeira página -->
           <div id="previewContainer" class="text-center"></div>
           <div class="d-grid gap-2 mt-4">
             <button id="compressBtn" class="btn btn-custom btn-lg animate__animated animate__pulse">Comprimir PDF</button>
@@ -205,12 +225,12 @@
 
     let loadedPDF = null;
 
-    // Calcula a escala com base na qualidade (varia de 0.75 a 2.0)
+    // Calcula a escala com base na qualidade (de 0.75 a 2.0)
     function getScale() {
       return 0.75 + (qualitySlider.value / 100) * (2 - 0.75);
     }
 
-    // Atualiza a estimativa e o preview da primeira página, garantindo que o preview fique centralizado
+    // Atualiza a estimativa e o preview da primeira página (sempre centralizado)
     async function updateEstimation() {
       qValue.textContent = qualitySlider.value + '%';
       if (!loadedPDF) return;
@@ -222,15 +242,14 @@
         canvas.width = viewport.width;
         canvas.height = viewport.height;
         await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
-        // Cria a imagem JPEG conforme a qualidade definida
         const imgData = canvas.toDataURL('image/jpeg', qualitySlider.value / 100);
-        // Estimativa de tamanho: renderiza a primeira página e multiplica pelo número total de páginas
+        // Estima o tamanho multiplicando a primeira página pelo total
         const base64Str = imgData.split(',')[1];
         const sizePageBytes = Math.floor(base64Str.length * 3 / 4);
         const totalSizeBytes = sizePageBytes * loadedPDF.numPages;
         const totalSizeMB = (totalSizeBytes / (1024 * 1024)).toFixed(2);
         estimateDisplay.textContent = `Estimativa de tamanho: ${totalSizeMB} MB`;
-        // Atualiza o preview com a imagem gerada, garantindo que ela seja centralizada
+        // Atualiza o preview, garantindo centralização
         const imgPreview = new Image();
         imgPreview.src = imgData;
         imgPreview.classList.add('mx-auto', 'd-block');
@@ -252,8 +271,39 @@
 
     qualitySlider.addEventListener('input', updateEstimation);
 
+    // Animação shine com direção aleatória e parâmetros variados
+    previewContainer.addEventListener('mouseenter', () => {
+      const animations = [
+        "shine-horz",
+        "shine-horz-rev",
+        "shine-vert",
+        "shine-vert-rev",
+        "shine-diag",
+        "shine-diag-rev"
+      ];
+      const randomAnim = animations[Math.floor(Math.random() * animations.length)];
+      const duration = (Math.random() * 1 + 0.5).toFixed(2) + "s"; // 0.5s a 1.5s
+
+      if (randomAnim === "shine-horz" || randomAnim === "shine-horz-rev") {
+        const width = (Math.random() * 30 + 40).toFixed(0) + "%";
+        previewContainer.style.setProperty("--shine-width", width);
+        previewContainer.style.setProperty("--shine-height", "100%");
+      } else if (randomAnim === "shine-vert" || randomAnim === "shine-vert-rev") {
+        const height = (Math.random() * 30 + 40).toFixed(0) + "%";
+        previewContainer.style.setProperty("--shine-height", height);
+        previewContainer.style.setProperty("--shine-width", "100%");
+      } else {
+        const width = (Math.random() * 30 + 40).toFixed(0) + "%";
+        const height = (Math.random() * 30 + 40).toFixed(0) + "%";
+        previewContainer.style.setProperty("--shine-width", width);
+        previewContainer.style.setProperty("--shine-height", height);
+      }
+      previewContainer.style.setProperty("--shine-duration", duration);
+      previewContainer.style.setProperty("--shine-animation", randomAnim);
+    });
+
     compressBtn.onclick = async () => {
-      if (!loadedPDF) { 
+      if (!loadedPDF) {
         alert('Selecione um PDF.');
         return;
       }
@@ -282,7 +332,7 @@
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
       link.download = "compressed.pdf";
-      link.className = "btn btn-success";
+      link.className = "btn btn-custom";
       link.textContent = "Baixar PDF";
       output.appendChild(link);
     };
