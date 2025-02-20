@@ -3,206 +3,100 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Comprimir PDF</title>
+  <title>Comprimir PDF - Escolha o Método</title>
   <!-- Bootstrap CSS -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <!-- Animate.css -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <!-- Google Fonts -->
-  <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
-    rel="stylesheet"
-  />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
   <style>
-    /* Remove scroll do body e ocupa 100% da tela */
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      overflow: hidden;
+    html, body {
+      margin: 0; padding: 0; height: 100%; overflow: hidden;
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #ffffff, #ff80ab);
       color: #333;
     }
-    /* Container centralizado */
     .full-vh {
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      height: 100%; display: flex; align-items: center; justify-content: center;
     }
-    /* Card com scroll interno se necessário */
     .card {
-      background: #fff;
-      border: none;
-      border-radius: 15px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-      padding: 30px;
+      background: #fff; border: none; border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15); padding: 30px;
       transition: transform 0.3s ease;
-      max-width: 400px;
-      width: 100%;
-      max-height: 90vh;
-      overflow-y: auto;
+      max-width: 600px; width: 100%; max-height: 95vh; overflow-y: auto;
     }
-    .card:hover {
-      transform: scale(1.02);
-    }
+    .card:hover { transform: scale(1.02); }
     .card-title {
-      font-size: 1.8rem;
-      font-weight: 600;
-      margin-bottom: 20px;
-      color: #ff4081;
-      text-align: center;
+      font-size: 1.8rem; font-weight: 600; margin-bottom: 20px;
+      color: #ff4081; text-align: center;
     }
-    .form-label {
-      font-weight: 500;
+    .form-label { font-weight: 500; }
+    .form-control, .form-range {
+      border-radius: 10px; border: 2px solid #ddd;
     }
-    .form-control {
-      border-radius: 10px;
-      border: 2px solid #ddd;
-    }
-    /* Slider Rosa */
-    input[type="range"] {
-      -webkit-appearance: none;
-      width: 100%;
-      height: 10px;
-      background: #f0f0f0;
-      border-radius: 5px;
-      outline: none;
-    }
-    input[type="range"]:hover {
-      background: #e0e0e0;
-    }
-    input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 24px;
-      height: 24px;
-      background: #ff4081;
-      border: 2px solid #fff;
-      border-radius: 50%;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-      cursor: pointer;
-      transition: transform 0.2s ease-in-out, background 0.2s ease-in-out;
-    }
-    input[type="range"]::-webkit-slider-thumb:hover {
-      background: #ff80ab;
-      transform: scale(1.1);
-    }
-    input[type="range"]::-moz-range-thumb {
-      width: 24px;
-      height: 24px;
-      background: #ff4081;
-      border: 2px solid #fff;
-      border-radius: 50%;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-      cursor: pointer;
-      transition: transform 0.2s ease-in-out, background 0.2s ease-in-out;
-    }
-    input[type="range"]::-moz-range-thumb:hover {
-      background: #ff80ab;
-      transform: scale(1.1);
-    }
-    /* Botão */
     .btn-custom {
-      background-color: #ff4081;
-      color: #fff !important;
-      font-weight: 600;
-      border: none;
-      border-radius: 30px;
+      background-color: #ff4081; color: #fff !important;
+      font-weight: 600; border: none; border-radius: 30px;
       padding: 10px 20px;
       transition: background-color 0.3s ease, transform 0.3s ease;
     }
     .btn-custom:hover {
-      background-color: #e73370;
-      transform: scale(1.05);
-      color: #fff !important;
+      background-color: #e73370; transform: scale(1.05);
     }
-    a.btn-success {
-      border-radius: 30px;
-      font-weight: 600;
-      margin-top: 15px;
-    }
-    /* Display do tamanho original com emoji (algo ruim) */
     #originalSizeDisplay {
-      text-align: center;
-      font-size: 1rem;
-      color: #ff4081;
-      margin-bottom: 15px;
+      text-align: center; font-size: 1rem; color: #ff4081; margin-bottom: 15px;
     }
-    /* Preview */
     #previewContainer {
-      position: relative;
-      overflow: hidden;
-      margin-top: 20px;
-      text-align: center;
+      text-align: center; margin-top: 20px;
     }
     #previewContainer img {
-      border: 2px solid #ddd;
-      border-radius: 10px;
-      max-width: 100%;
-      height: auto;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      border: 2px solid #ddd; border-radius: 10px;
+      max-width: 100%; height: auto; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       transition: transform 0.3s ease;
-      display: block;
-      margin: 0 auto;
+      cursor: zoom-in;
     }
-    /* Shine Effect */
-    #previewContainer::after {
-      content: "";
-      position: absolute;
-      width: var(--shine-width, 50%);
-      height: var(--shine-height, 100%);
-      background: linear-gradient(120deg, transparent, var(--shine-color, rgba(255,64,129,0.5)), transparent);
-      pointer-events: none;
-      animation: var(--shine-animation, shine-horz) var(--shine-duration, 0.7s) linear forwards;
+    /* Scrollbar elegante para o card */
+    .card::-webkit-scrollbar {
+      width: 8px;
     }
-    @keyframes shine-horz {
-      0% { left: -var(--shine-width, 50%); opacity: 0; }
-      50% { opacity: 1; }
-      100% { left: 100%; opacity: 0; }
+    .card::-webkit-scrollbar-track {
+      background: rgba(240,240,240,0.8);
+      border-radius: 10px;
     }
-    @keyframes shine-horz-rev {
-      0% { left: 100%; opacity: 0; }
-      50% { opacity: 1; }
-      100% { left: -var(--shine-width, 50%); opacity: 0; }
+    .card::-webkit-scrollbar-thumb {
+      background: #ff80ab;
+      border-radius: 10px;
     }
-    @keyframes shine-vert {
-      0% { top: -var(--shine-height, 50%); opacity: 0; }
-      50% { opacity: 1; }
-      100% { top: 100%; opacity: 0; }
+    .card::-webkit-scrollbar-thumb:hover {
+      background: #ff4081;
     }
-    @keyframes shine-vert-rev {
-      0% { top: 100%; opacity: 0; }
-      50% { opacity: 1; }
-      100% { top: -var(--shine-height, 50%); opacity: 0; }
+    /* Seção dos métodos (inicialmente oculta) */
+    #methodOptions { display: none; margin: 20px 0; }
+    .method-description {
+      font-size: 0.9rem; color: #666; margin-top: 5px;
     }
-    @keyframes shine-diag {
-      0% { left: -var(--shine-width, 50%); top: -var(--shine-height, 50%); opacity: 0; }
-      50% { opacity: 1; }
-      100% { left: 100%; top: 100%; opacity: 0; }
+    /* Opções para método por imagem */
+    #imageOptions {
+      display: none; margin-top: 15px;
+      border: 1px solid #ddd; border-radius: 10px;
+      padding: 15px; background-color: #f9f9f9;
     }
-    @keyframes shine-diag-rev {
-      0% { left: 100%; top: 100%; opacity: 0; }
-      50% { opacity: 1; }
-      100% { left: -var(--shine-width, 50%); top: -var(--shine-height, 50%); opacity: 0; }
+    .spinner-border.pink { color: #ff4081 !important; }
+    /* Overlay de Zoom Full Screen com panning */
+    #zoomOverlay {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      display: none; align-items: center; justify-content: center;
+      z-index: 1000; overflow: hidden;
     }
-    /* Saída (tamanho final - algo bom) */
-    #output p {
-      font-size: 1.1rem;
-      font-weight: 500;
-      text-align: center;
-      color: #ff4081;
-    }
-    /* Spinner rosa centralizado */
-    .spinner-border.pink {
-      color: #ff4081 !important;
+    #zoomOverlay img {
+      max-width: 90%;
+      max-height: 90%;
+      transition: transform 0.1s ease-out;
+      cursor: grab;
+      user-select: none;
     }
   </style>
 </head>
@@ -214,163 +108,200 @@
         <label for="pdfInput" class="form-label">Selecione o PDF:</label>
         <input type="file" class="form-control" id="pdfInput" accept="application/pdf" />
       </div>
-      <!-- Exibe o tamanho original (ruim) com emoji -->
       <div id="originalSizeDisplay"></div>
-      <div class="mb-3">
-        <label for="quality" class="form-label">
-          Qualidade JPEG: <span id="qValue">100%</span>
-        </label>
-        <input type="range" class="form-range" id="quality" min="1" max="100" step="1" value="100" />
+      
+      <!-- Seção de métodos, exibida somente após carregar o PDF -->
+      <div id="methodOptions" class="mb-3">
+        <label class="form-label">Escolha o método de compressão:</label>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="compressionMethod" id="methodImage" value="imagem">
+          <label class="form-check-label" for="methodImage">
+            🖼️ Por Imagem
+          </label>
+          <div class="method-description">
+            Converte cada página em imagem JPEG. Permite personalizar escala, qualidade e visualizar detalhes com zoom e panning.
+          </div>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="compressionMethod" id="methodRebuild" value="rebuild" checked>
+          <label class="form-check-label" for="methodRebuild">
+            📄 Rebuild pdf‑lib
+          </label>
+          <div class="method-description">
+            Reconstrói o PDF mantendo os dados vetoriais e removendo informações desnecessárias.
+          </div>
+        </div>
       </div>
-      <!-- Preview em tempo real da primeira página -->
+      
+      <!-- Opções para método por imagem -->
+      <div id="imageOptions">
+        <h5>Opções de Imagem</h5>
+        <div class="mb-3">
+          <label for="scaleSlider" class="form-label">
+            Escala: <span id="scaleValue">1.00</span>x
+          </label>
+          <input type="range" class="form-range" id="scaleSlider" min="0.5" max="2" step="0.05" value="1">
+        </div>
+        <div class="mb-3">
+          <label for="jpegQuality" class="form-label">
+            Qualidade JPEG: <span id="jpegQualityValue">100%</span>
+          </label>
+          <input type="range" class="form-range" id="jpegQuality" min="1" max="100" step="1" value="100">
+        </div>
+      </div>
+      
       <div id="previewContainer"></div>
+      
       <div class="d-grid gap-2 mt-4">
-        <button id="compressBtn" class="btn btn-custom btn-lg animate__animated animate__pulse">
-          Comprimir PDF
+        <button id="processBtn" class="btn btn-custom btn-lg animate__animated animate__pulse">
+          Processar Compressão
         </button>
       </div>
-      <!-- Exibe o tamanho final do arquivo (bom) -->
-      <div id="output" class="mt-4"></div>
+      
+      <div id="resultContainer" class="mt-4"></div>
     </div>
   </div>
 
+  <!-- Overlay de Zoom -->
+  <div id="zoomOverlay">
+    <img id="zoomImage" src="" alt="Zoom Preview" />
+  </div>
+  
+  <!-- Bibliotecas -->
   <!-- PDF.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
   <!-- jsPDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <!-- Bootstrap Bundle JS -->
+  <!-- pdf-lib -->
+  <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+  <!-- Bootstrap Bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
   <script>
     const pdfInput = document.getElementById("pdfInput");
-    const qualitySlider = document.getElementById("quality");
-    const qValue = document.getElementById("qValue");
-    const compressBtn = document.getElementById("compressBtn");
-    const output = document.getElementById("output");
-    const previewContainer = document.getElementById("previewContainer");
     const originalSizeDisplay = document.getElementById("originalSizeDisplay");
+    const previewContainer = document.getElementById("previewContainer");
+    const processBtn = document.getElementById("processBtn");
+    const resultContainer = document.getElementById("resultContainer");
+    const methodOptions = document.getElementById("methodOptions");
+    const methodRadios = document.getElementsByName("compressionMethod");
+    const imageOptions = document.getElementById("imageOptions");
+    const scaleSlider = document.getElementById("scaleSlider");
+    const scaleValue = document.getElementById("scaleValue");
+    const jpegQuality = document.getElementById("jpegQuality");
+    const jpegQualityValue = document.getElementById("jpegQualityValue");
+    const zoomOverlay = document.getElementById("zoomOverlay");
+    const zoomImage = document.getElementById("zoomImage");
 
-    let loadedPDF = null;
-    let originalFileSize = 0;
+    let loadedPDF = null, originalPdfBytes = null, originalFileSize = 0;
+    let zoomScale = 1, panX = 0, panY = 0;
+    let isDragging = false, startX = 0, startY = 0;
 
-    function getScale() {
-      return 0.75 + (qualitySlider.value / 100) * (2 - 0.75);
-    }
-
-    // Formata bytes para exibição legível
     function formatBytes(bytes) {
       if (bytes < 1024) return bytes + " B";
-      else if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + " KB";
-      else return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + " KB";
+      return (bytes / (1024 * 1024)).toFixed(2) + " MB";
     }
-
-    async function updatePreview() {
-      qValue.textContent = qualitySlider.value + "%";
+    
+    // Atualiza sliders e preview (se método imagem ativo)
+    scaleSlider.addEventListener("input", () => {
+      scaleValue.textContent = parseFloat(scaleSlider.value).toFixed(2);
+      if (currentMethod() === 'imagem') updatePreviewImage();
+    });
+    jpegQuality.addEventListener("input", () => {
+      jpegQualityValue.textContent = jpegQuality.value + "%";
+      if (currentMethod() === 'imagem') updatePreviewImage();
+    });
+    
+    function currentMethod() {
+      for (const radio of methodRadios) {
+        if (radio.checked) return radio.value;
+      }
+      return null;
+    }
+    
+    // Exibe opções específicas se "Por Imagem" for escolhido
+    for (const radio of methodRadios) {
+      radio.addEventListener("change", () => {
+        if (currentMethod() === 'imagem') {
+          imageOptions.style.display = "block";
+          updatePreviewImage();
+        } else {
+          imageOptions.style.display = "none";
+          updatePreviewDefault();
+        }
+      });
+    }
+    
+    // Função para anexar o listener de zoom à imagem do preview
+    function attachZoomListener(img) {
+      img.addEventListener("click", () => openZoomOverlay(img.src));
+    }
+    
+    // Preview para método "Por Imagem"
+    async function updatePreviewImage() {
       if (!loadedPDF) return;
       try {
         const page = await loadedPDF.getPage(1);
-        const scale = getScale();
-        const viewport = page.getViewport({ scale });
+        const viewport = page.getViewport({ scale: parseFloat(scaleSlider.value) });
         const canvas = document.createElement("canvas");
         canvas.width = viewport.width;
         canvas.height = viewport.height;
-        await page.render({
-          canvasContext: canvas.getContext("2d"),
-          viewport,
-        }).promise;
-        const imgData = canvas.toDataURL("image/jpeg", qualitySlider.value / 100);
-        const imgPreview = new Image();
-        imgPreview.src = imgData;
+        await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
+        const imgData = canvas.toDataURL("image/jpeg", jpegQuality.value / 100);
+        const img = new Image();
+        img.src = imgData;
         previewContainer.innerHTML = "";
-        previewContainer.appendChild(imgPreview);
-      } catch (e) {
-        console.error(e);
-      }
+        previewContainer.appendChild(img);
+        attachZoomListener(img);
+      } catch (e) { console.error(e); }
     }
-
-    function isPDF(file) {
-      return (
-        (file.type && file.type === "application/pdf") ||
-        (!file.type && file.name.toLowerCase().endsWith(".pdf"))
-      );
+    
+    // Preview para método "Rebuild pdf‑lib"
+    async function updatePreviewDefault() {
+      if (!loadedPDF) return;
+      try {
+        const page = await loadedPDF.getPage(1);
+        const viewport = page.getViewport({ scale: 1 });
+        const canvas = document.createElement("canvas");
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
+        const imgData = canvas.toDataURL("image/jpeg", 1);
+        const img = new Image();
+        img.src = imgData;
+        previewContainer.innerHTML = "";
+        previewContainer.appendChild(img);
+        attachZoomListener(img);
+      } catch (e) { console.error(e); }
     }
-
+    
     pdfInput.addEventListener("change", async () => {
       const file = pdfInput.files[0];
-      if (file) {
-        if (!isPDF(file)) {
-          alert("Por favor, selecione um arquivo PDF válido.");
-          pdfInput.value = "";
-          return;
-        }
-        originalFileSize = file.size;
-        originalSizeDisplay.innerHTML = `<strong>😵‍💫 Tamanho inicial: ${formatBytes(originalFileSize)}</strong>`;
-        const arrayBuffer = await file.arrayBuffer();
-        loadedPDF = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-        updatePreview();
-      }
-    });
-
-    qualitySlider.addEventListener("input", updatePreview);
-
-    previewContainer.addEventListener("mouseenter", () => {
-      const animations = [
-        "shine-horz",
-        "shine-horz-rev",
-        "shine-vert",
-        "shine-vert-rev",
-        "shine-diag",
-        "shine-diag-rev",
-      ];
-      const randomAnim = animations[Math.floor(Math.random() * animations.length)];
-      const duration = (Math.random() * 1 + 0.5).toFixed(2) + "s";
-      if (randomAnim === "shine-horz" || randomAnim === "shine-horz-rev") {
-        const width = (Math.random() * 30 + 40).toFixed(0) + "%";
-        previewContainer.style.setProperty("--shine-width", width);
-        previewContainer.style.setProperty("--shine-height", "100%");
-      } else if (
-        randomAnim === "shine-vert" ||
-        randomAnim === "shine-vert-rev"
-      ) {
-        const height = (Math.random() * 30 + 40).toFixed(0) + "%";
-        previewContainer.style.setProperty("--shine-height", height);
-        previewContainer.style.setProperty("--shine-width", "100%");
-      } else {
-        const width = (Math.random() * 30 + 40).toFixed(0) + "%";
-        const height = (Math.random() * 30 + 40).toFixed(0) + "%";
-        previewContainer.style.setProperty("--shine-width", width);
-        previewContainer.style.setProperty("--shine-height", height);
-      }
-      previewContainer.style.setProperty("--shine-duration", duration);
-      previewContainer.style.setProperty("--shine-animation", randomAnim);
-      const alpha = (Math.random() * 0.4 + 0.3).toFixed(2);
-      previewContainer.style.setProperty("--shine-color", `rgba(255,64,129,${alpha})`);
-    });
-
-    compressBtn.onclick = async () => {
-      if (!loadedPDF) {
-        alert("Selecione um PDF.");
+      if (!file || !file.name.toLowerCase().endsWith(".pdf")) {
+        alert("Selecione um PDF válido.");
         return;
       }
-      output.innerHTML = `
-        <div class="d-flex flex-column align-items-center">
-          <div class="spinner-border pink" role="status" style="margin-bottom:10px;"></div>
-          <p style="color:#ff4081;">Processando...</p>
-        </div>
-      `;
+      originalFileSize = file.size;
+      originalSizeDisplay.innerHTML = `<strong>😵‍💫 Tamanho inicial: ${formatBytes(originalFileSize)}</strong>`;
+      originalPdfBytes = await file.arrayBuffer();
+      loadedPDF = await pdfjsLib.getDocument({ data: originalPdfBytes }).promise;
+      methodOptions.style.display = "block";
+      updatePreviewDefault();
+    });
+    
+    // Método "Por Imagem"
+    async function compressViaImage() {
       const { jsPDF } = window.jspdf;
       let novoPDF = null;
-      const scale = getScale();
       for (let i = 1; i <= loadedPDF.numPages; i++) {
         const page = await loadedPDF.getPage(i);
-        const viewport = page.getViewport({ scale });
+        const viewport = page.getViewport({ scale: parseFloat(scaleSlider.value) });
         const canvas = document.createElement("canvas");
         canvas.width = viewport.width;
         canvas.height = viewport.height;
-        await page.render({
-          canvasContext: canvas.getContext("2d"),
-          viewport,
-        }).promise;
-        const imgData = canvas.toDataURL("image/jpeg", qualitySlider.value / 100);
+        await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
+        const imgData = canvas.toDataURL("image/jpeg", jpegQuality.value / 100);
         if (i === 1) {
           novoPDF = new jsPDF({ unit: "px", format: [canvas.width, canvas.height] });
         } else {
@@ -378,21 +309,130 @@
         }
         novoPDF.addImage(imgData, "JPEG", 0, 0, canvas.width, canvas.height);
       }
-      const blob = novoPDF.output("blob");
-      const tamanhoMB = (blob.size / (1024 * 1024)).toFixed(2);
-      output.innerHTML = `
-        <p style="color:#ff4081;"><strong>😎 Tamanho final: ${tamanhoMB} MB</strong></p>
+      return novoPDF.output("blob");
+    }
+    
+    // Método "Rebuild pdf‑lib"
+    async function compressViaPdfLib() {
+      const { PDFDocument } = PDFLib;
+      const pdfDoc = await PDFDocument.load(originalPdfBytes);
+      const newPdf = await PDFDocument.create();
+      const pages = await newPdf.copyPages(pdfDoc, pdfDoc.getPageIndices());
+      pages.forEach(p => newPdf.addPage(p));
+      const pdfBytes = await newPdf.save();
+      return new Blob([pdfBytes], { type: "application/pdf" });
+    }
+    
+    async function processCompression() {
+      if (!loadedPDF || !originalPdfBytes) {
+        alert("Selecione um PDF primeiro.");
+        return;
+      }
+      const method = currentMethod();
+      if (!method) {
+        alert("Escolha um método de compressão.");
+        return;
+      }
+      resultContainer.innerHTML = `
+        <div class="d-flex flex-column align-items-center">
+          <div class="spinner-border pink mb-2" role="status"></div>
+          <p>Analisando compressão...</p>
+        </div>`;
+      let blob;
+      try {
+        if (method === 'imagem') {
+          blob = await compressViaImage();
+        } else if (method === 'rebuild') {
+          blob = await compressViaPdfLib();
+        }
+      } catch (e) {
+        console.error(e);
+        resultContainer.innerHTML = "<p style='color:#ff4081;'>Erro durante a compressão.</p>";
+        return;
+      }
+      resultContainer.innerHTML = `
+        <p style="color:#ff4081;"><strong>Tamanho final: ${formatBytes(blob.size)}</strong></p>
         <div class="text-center">
-          <a
-            href="${URL.createObjectURL(blob)}"
-            download="compressed.pdf"
-            class="btn btn-success animate__animated animate__pulse animate__infinite"
-          >
+          <a href="${URL.createObjectURL(blob)}" download="compressed.pdf" class="btn btn-custom">
             Baixar PDF
           </a>
-        </div>
-      `;
-    };
+        </div>`;
+    }
+    
+    processBtn.addEventListener("click", processCompression);
+    
+    // Funções de Zoom e Pan no Overlay
+    function updateZoomTransform() {
+      zoomImage.style.transform = `translate(${panX}px, ${panY}px) scale(${zoomScale})`;
+    }
+    
+    function openZoomOverlay(src) {
+      zoomImage.src = src;
+      zoomScale = 1; panX = 0; panY = 0;
+      updateZoomTransform();
+      zoomOverlay.style.display = "flex";
+    }
+    
+    // Fechar overlay ao clicar fora da imagem
+    zoomOverlay.addEventListener("click", (e) => {
+      if (e.target === zoomOverlay || e.target === zoomImage) {
+        zoomOverlay.style.display = "none";
+      }
+    });
+    
+    // Zoom com scroll
+    zoomOverlay.addEventListener("wheel", (e) => {
+      e.preventDefault();
+      if (e.deltaY < 0) {
+        zoomScale += 0.1;
+      } else {
+        zoomScale = Math.max(0.5, zoomScale - 0.1);
+      }
+      updateZoomTransform();
+    });
+    
+    // Pan com mouse
+    zoomImage.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      startX = e.clientX - panX;
+      startY = e.clientY - panY;
+      zoomImage.style.cursor = "grabbing";
+      e.preventDefault();
+    });
+    
+    document.addEventListener("mousemove", (e) => {
+      if (isDragging) {
+        panX = e.clientX - startX;
+        panY = e.clientY - startY;
+        updateZoomTransform();
+      }
+    });
+    
+    document.addEventListener("mouseup", () => {
+      isDragging = false;
+      zoomImage.style.cursor = "grab";
+    });
+    
+    // Touch events para dispositivos móveis (opcional)
+    zoomImage.addEventListener("touchstart", (e) => {
+      isDragging = true;
+      let touch = e.touches[0];
+      startX = touch.clientX - panX;
+      startY = touch.clientY - panY;
+    });
+    
+    zoomImage.addEventListener("touchmove", (e) => {
+      if (isDragging) {
+        let touch = e.touches[0];
+        panX = touch.clientX - startX;
+        panY = touch.clientY - startY;
+        updateZoomTransform();
+      }
+    });
+    
+    zoomImage.addEventListener("touchend", () => {
+      isDragging = false;
+    });
   </script>
 </body>
 </html>
