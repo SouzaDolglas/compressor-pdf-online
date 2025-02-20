@@ -1,36 +1,44 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Comprimir PDF</title>
   <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
   <!-- Animate.css -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+    rel="stylesheet"
+  />
   <style>
-    /* Remove scroll do body e faz ocupar a tela inteira */
-    html, body {
+    /* Remove scroll do body e ocupa 100% da tela */
+    html,
+    body {
       margin: 0;
       padding: 0;
       height: 100%;
-      overflow: hidden; /* impede scroll externo */
+      overflow: hidden;
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #ffffff, #ff80ab);
       color: #333;
     }
-
-    /* Container que ocupa a tela inteira e centraliza conteúdo */
+    /* Container centralizado */
     .full-vh {
       height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-
-    /* Card com limite de altura e scroll interno se precisar */
+    /* Card com scroll interno se necessário */
     .card {
       background: #fff;
       border: none;
@@ -40,8 +48,8 @@
       transition: transform 0.3s ease;
       max-width: 400px;
       width: 100%;
-      max-height: 90vh; /* limita altura para caber na tela */
-      overflow-y: auto; /* scroll interno, se necessário */
+      max-height: 90vh;
+      overflow-y: auto;
     }
     .card:hover {
       transform: scale(1.02);
@@ -61,7 +69,7 @@
       border: 2px solid #ddd;
     }
     /* Slider Rosa */
-    input[type=range] {
+    input[type="range"] {
       -webkit-appearance: none;
       width: 100%;
       height: 10px;
@@ -69,42 +77,42 @@
       border-radius: 5px;
       outline: none;
     }
-    input[type=range]:hover {
+    input[type="range"]:hover {
       background: #e0e0e0;
     }
-    input[type=range]::-webkit-slider-thumb {
+    input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
       width: 24px;
       height: 24px;
       background: #ff4081;
       border: 2px solid #fff;
       border-radius: 50%;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
       cursor: pointer;
       transition: transform 0.2s ease-in-out, background 0.2s ease-in-out;
     }
-    input[type=range]::-webkit-slider-thumb:hover {
+    input[type="range"]::-webkit-slider-thumb:hover {
       background: #ff80ab;
       transform: scale(1.1);
     }
-    input[type=range]::-moz-range-thumb {
+    input[type="range"]::-moz-range-thumb {
       width: 24px;
       height: 24px;
       background: #ff4081;
       border: 2px solid #fff;
       border-radius: 50%;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
       cursor: pointer;
       transition: transform 0.2s ease-in-out, background 0.2s ease-in-out;
     }
-    input[type=range]::-moz-range-thumb:hover {
+    input[type="range"]::-moz-range-thumb:hover {
       background: #ff80ab;
       transform: scale(1.1);
     }
     /* Botão */
     .btn-custom {
       background-color: #ff4081;
-      color: #fff !important; /* Mantém texto branco */
+      color: #fff !important;
       font-weight: 600;
       border: none;
       border-radius: 30px;
@@ -114,12 +122,19 @@
     .btn-custom:hover {
       background-color: #e73370;
       transform: scale(1.05);
-      color: #fff !important; /* Garante branco no hover também */
+      color: #fff !important;
     }
     a.btn-success {
       border-radius: 30px;
       font-weight: 600;
       margin-top: 15px;
+    }
+    /* Display do tamanho original com emoji (algo ruim) */
+    #originalSizeDisplay {
+      text-align: center;
+      font-size: 1rem;
+      color: #ff4081;
+      margin-bottom: 15px;
     }
     /* Preview */
     #previewContainer {
@@ -138,7 +153,7 @@
       display: block;
       margin: 0 auto;
     }
-    /* Shine Effect com animações aleatórias */
+    /* Shine Effect */
     #previewContainer::after {
       content: "";
       position: absolute;
@@ -178,19 +193,14 @@
       50% { opacity: 1; }
       100% { left: -var(--shine-width, 50%); top: -var(--shine-height, 50%); opacity: 0; }
     }
-    /* Saída & Estimativa */
-    #estimateDisplay {
-      font-size: 1rem;
-      color: #555;
-      margin-top: 10px;
-      text-align: center;
-    }
+    /* Saída (tamanho final - algo bom) */
     #output p {
       font-size: 1.1rem;
       font-weight: 500;
       text-align: center;
+      color: #ff4081;
     }
-    /* Spinner customizado em rosa */
+    /* Spinner rosa centralizado */
     .spinner-border.pink {
       color: #ff4081 !important;
     }
@@ -202,14 +212,15 @@
       <h3 class="card-title">Comprimir PDF</h3>
       <div class="mb-3">
         <label for="pdfInput" class="form-label">Selecione o PDF:</label>
-        <input type="file" class="form-control" id="pdfInput" accept="application/pdf">
+        <input type="file" class="form-control" id="pdfInput" accept="application/pdf" />
       </div>
+      <!-- Exibe o tamanho original (ruim) com emoji -->
+      <div id="originalSizeDisplay"></div>
       <div class="mb-3">
         <label for="quality" class="form-label">
           Qualidade JPEG: <span id="qValue">100%</span>
         </label>
-        <input type="range" class="form-range" id="quality" min="1" max="100" step="1" value="100">
-        <div id="estimateDisplay"></div>
+        <input type="range" class="form-range" id="quality" min="1" max="100" step="1" value="100" />
       </div>
       <!-- Preview em tempo real da primeira página -->
       <div id="previewContainer"></div>
@@ -218,6 +229,7 @@
           Comprimir PDF
         </button>
       </div>
+      <!-- Exibe o tamanho final do arquivo (bom) -->
       <div id="output" class="mt-4"></div>
     </div>
   </div>
@@ -228,45 +240,44 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <!-- Bootstrap Bundle JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  
   <script>
-    const pdfInput = document.getElementById('pdfInput');
-    const qualitySlider = document.getElementById('quality');
-    const qValue = document.getElementById('qValue');
-    const compressBtn = document.getElementById('compressBtn');
-    const output = document.getElementById('output');
-    const estimateDisplay = document.getElementById('estimateDisplay');
-    const previewContainer = document.getElementById('previewContainer');
+    const pdfInput = document.getElementById("pdfInput");
+    const qualitySlider = document.getElementById("quality");
+    const qValue = document.getElementById("qValue");
+    const compressBtn = document.getElementById("compressBtn");
+    const output = document.getElementById("output");
+    const previewContainer = document.getElementById("previewContainer");
+    const originalSizeDisplay = document.getElementById("originalSizeDisplay");
 
     let loadedPDF = null;
+    let originalFileSize = 0;
 
-    // Calcula a escala com base na qualidade (0.75 a 2.0)
     function getScale() {
       return 0.75 + (qualitySlider.value / 100) * (2 - 0.75);
     }
 
-    // Atualiza a estimativa e o preview da primeira página
-    async function updateEstimation() {
-      qValue.textContent = qualitySlider.value + '%';
+    // Formata bytes para exibição legível
+    function formatBytes(bytes) {
+      if (bytes < 1024) return bytes + " B";
+      else if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + " KB";
+      else return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+    }
+
+    async function updatePreview() {
+      qValue.textContent = qualitySlider.value + "%";
       if (!loadedPDF) return;
       try {
         const page = await loadedPDF.getPage(1);
         const scale = getScale();
         const viewport = page.getViewport({ scale });
-        const canvas = document.createElement('canvas');
+        const canvas = document.createElement("canvas");
         canvas.width = viewport.width;
         canvas.height = viewport.height;
-        await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
-        const imgData = canvas.toDataURL('image/jpeg', qualitySlider.value / 100);
-
-        // Estimativa de tamanho
-        const base64Str = imgData.split(',')[1];
-        const sizePageBytes = Math.floor(base64Str.length * 3 / 4);
-        const totalSizeBytes = sizePageBytes * loadedPDF.numPages;
-        const totalSizeMB = (totalSizeBytes / (1024 * 1024)).toFixed(2);
-        estimateDisplay.textContent = `Estimativa de tamanho: ${totalSizeMB} MB`;
-
-        // Preview
+        await page.render({
+          canvasContext: canvas.getContext("2d"),
+          viewport,
+        }).promise;
+        const imgData = canvas.toDataURL("image/jpeg", qualitySlider.value / 100);
         const imgPreview = new Image();
         imgPreview.src = imgData;
         previewContainer.innerHTML = "";
@@ -283,41 +294,43 @@
       );
     }
 
-    pdfInput.addEventListener('change', async () => {
+    pdfInput.addEventListener("change", async () => {
       const file = pdfInput.files[0];
       if (file) {
-        // Verifica se é PDF
         if (!isPDF(file)) {
           alert("Por favor, selecione um arquivo PDF válido.");
           pdfInput.value = "";
           return;
         }
+        originalFileSize = file.size;
+        originalSizeDisplay.innerHTML = `<strong>😵‍💫 Tamanho inicial: ${formatBytes(originalFileSize)}</strong>`;
         const arrayBuffer = await file.arrayBuffer();
         loadedPDF = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-        updateEstimation();
+        updatePreview();
       }
     });
 
-    qualitySlider.addEventListener('input', updateEstimation);
+    qualitySlider.addEventListener("input", updatePreview);
 
-    // Animação shine com direção e parâmetros aleatórios
-    previewContainer.addEventListener('mouseenter', () => {
+    previewContainer.addEventListener("mouseenter", () => {
       const animations = [
         "shine-horz",
         "shine-horz-rev",
         "shine-vert",
         "shine-vert-rev",
         "shine-diag",
-        "shine-diag-rev"
+        "shine-diag-rev",
       ];
       const randomAnim = animations[Math.floor(Math.random() * animations.length)];
-      const duration = (Math.random() * 1 + 0.5).toFixed(2) + "s"; // 0.5s ~ 1.5s
-
+      const duration = (Math.random() * 1 + 0.5).toFixed(2) + "s";
       if (randomAnim === "shine-horz" || randomAnim === "shine-horz-rev") {
         const width = (Math.random() * 30 + 40).toFixed(0) + "%";
         previewContainer.style.setProperty("--shine-width", width);
         previewContainer.style.setProperty("--shine-height", "100%");
-      } else if (randomAnim === "shine-vert" || randomAnim === "shine-vert-rev") {
+      } else if (
+        randomAnim === "shine-vert" ||
+        randomAnim === "shine-vert-rev"
+      ) {
         const height = (Math.random() * 30 + 40).toFixed(0) + "%";
         previewContainer.style.setProperty("--shine-height", height);
         previewContainer.style.setProperty("--shine-width", "100%");
@@ -335,15 +348,12 @@
 
     compressBtn.onclick = async () => {
       if (!loadedPDF) {
-        alert('Selecione um PDF.');
+        alert("Selecione um PDF.");
         return;
       }
-      // Spinner rosa centralizado
       output.innerHTML = `
         <div class="d-flex flex-column align-items-center">
-          <div class="spinner-border pink" role="status" style="margin-bottom:10px;">
-            <span class="visually-hidden">Loading...</span>
-          </div>
+          <div class="spinner-border pink" role="status" style="margin-bottom:10px;"></div>
           <p style="color:#ff4081;">Processando...</p>
         </div>
       `;
@@ -353,24 +363,25 @@
       for (let i = 1; i <= loadedPDF.numPages; i++) {
         const page = await loadedPDF.getPage(i);
         const viewport = page.getViewport({ scale });
-        const canvas = document.createElement('canvas');
+        const canvas = document.createElement("canvas");
         canvas.width = viewport.width;
         canvas.height = viewport.height;
-        await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
-        const imgData = canvas.toDataURL('image/jpeg', qualitySlider.value / 100);
+        await page.render({
+          canvasContext: canvas.getContext("2d"),
+          viewport,
+        }).promise;
+        const imgData = canvas.toDataURL("image/jpeg", qualitySlider.value / 100);
         if (i === 1) {
           novoPDF = new jsPDF({ unit: "px", format: [canvas.width, canvas.height] });
         } else {
-          novoPDF.addPage([canvas.width, canvas.height], 'portrait');
+          novoPDF.addPage([canvas.width, canvas.height], "portrait");
         }
-        novoPDF.addImage(imgData, 'JPEG', 0, 0, canvas.width, canvas.height);
+        novoPDF.addImage(imgData, "JPEG", 0, 0, canvas.width, canvas.height);
       }
-      const blob = novoPDF.output('blob');
+      const blob = novoPDF.output("blob");
       const tamanhoMB = (blob.size / (1024 * 1024)).toFixed(2);
-
-      // Botão "Baixar PDF" centralizado, piscando
       output.innerHTML = `
-        <p>Tamanho final estimado: ${tamanhoMB} MB</p>
+        <p style="color:#ff4081;"><strong>😎 Tamanho final: ${tamanhoMB} MB</strong></p>
         <div class="text-center">
           <a
             href="${URL.createObjectURL(blob)}"
