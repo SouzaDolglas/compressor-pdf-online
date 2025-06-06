@@ -1,0 +1,20 @@
+name: Deploy do Compressor PDF Online
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Clonar o repositório
+        uses: actions/checkout@v3
+
+      - name: 🚀 Fazer deploy da pasta compressor-pdf-online para gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./compressor-pdf-online
+          publish_branch: gh-pages
