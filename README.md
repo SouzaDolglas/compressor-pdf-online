@@ -9,7 +9,7 @@
 </h1>
 
 <p align="center">
-  <a href="https://souzadolglas.github.io/compressor_pdf/">🌐 Acessar Aplicação Online</a>
+  <a href="https://souzadolglas.github.io/compressor-pdf-online/">🌐 Acessar Aplicação Online</a>
 </p>
 
 ---
