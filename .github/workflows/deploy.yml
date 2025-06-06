@@ -12,9 +12,10 @@ jobs:
       - name: 📥 Clonar o repositório
         uses: actions/checkout@v3
 
-      - name: 🚀 Fazer deploy da pasta compressor-pdf-online para gh-pages
+      - name: 🚀 Fazer deploy da pasta compressor-pdf-online para o GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./compressor-pdf-online
           publish_branch: gh-pages
+          force_orphan: true
