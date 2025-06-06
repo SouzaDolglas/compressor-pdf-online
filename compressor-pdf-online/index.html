@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comprimir PDF - Escolha o Método</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./static/css/style.css">
+
+</head>
+<body>
+  <div class="container-fluid full-vh">
+    <div class="card animate__animated animate__fadeInUp">
+      
+      <h3 class="card-title">Comprimir PDF</h3>
+      <div class="mb-3">
+        <label for="pdfInput" class="form-label">Selecione o PDF:</label>
+        <input type="file" class="form-control" id="pdfInput" accept="application/pdf" />
+      </div>
+      <div id="originalSizeDisplay"></div>
+      
+      <!-- Seção de métodos, exibida somente após carregar o PDF -->
+      <div id="methodOptions" class="mb-3">
+        <label class="form-label">Escolha o método de compressão:</label>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="compressionMethod" id="methodImage" value="imagem">
+          <label class="form-check-label" for="methodImage">
+            🖼️ Por Imagem
+          </label>
+          <div class="method-description">
+            Converte cada página em imagem JPEG. Permite personalizar escala, qualidade e visualizar detalhes com zoom e panning.
+          </div>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="compressionMethod" id="methodRebuild" value="rebuild" checked>
+          <label class="form-check-label" for="methodRebuild">
+            📄 Rebuild pdf‑lib
+          </label>
+          <div class="method-description">
+            Reconstrói o PDF mantendo os dados vetoriais e removendo informações desnecessárias.
+          </div>
+        </div>
+      </div>
+      
+      <!-- Opções para método por imagem -->
+      <div id="imageOptions">
+        <h5>Opções de Imagem</h5>
+        <div class="mb-3">
+          <label for="scaleSlider" class="form-label">
+            Escala: <span id="scaleValue">1.00</span>x
+          </label>
+          <input type="range" class="form-range" id="scaleSlider" min="0.5" max="2" step="0.05" value="1">
+        </div>
+        <div class="mb-3">
+          <label for="jpegQuality" class="form-label">
+            Qualidade JPEG: <span id="jpegQualityValue">100%</span>
+          </label>
+          <input type="range" class="form-range" id="jpegQuality" min="1" max="100" step="1" value="100">
+        </div>
+      </div>
+      
+      <div id="previewContainer"></div>
+      
+      <div class="d-grid gap-2 mt-4">
+        <button id="processBtn" class="btn btn-custom btn-lg animate__animated animate__pulse">
+          Processar Compressão
+        </button>
+      </div>
+      
+      <div id="resultContainer" class="mt-4"></div>
+    </div>
+  </div>
+
+  <!-- Overlay de Zoom -->
+  <div id="zoomOverlay">
+    <img id="zoomImage" src="" alt="Zoom Preview" />
+  </div>
+
+  <div class="floating-logo">
+    <img src="./static/images/isologo.png" alt="Logo" class="logo-animated" />
+  </div>
+  
+  
+  <!-- Bibliotecas -->
+  <!-- PDF.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+  <!-- jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- pdf-lib -->
+  <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+  <!-- Bootstrap Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script src="./static/js/app.js"></script>
+
+</body>
+</html>
